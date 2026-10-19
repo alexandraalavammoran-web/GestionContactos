@@ -1,0 +1,17 @@
+pilar cueva,0952581385,pilarcitacuevaas@email.com,Servidor,false
+emily Lasgos,0956221530,emi_lostop@email.com,Trabajo,false
+laila,0955853615,lalila@email.com,Servidor,false
+curita,235645645,cuirta@email.com,Familia,true
+tom,123564897,tom@email.com,Servidor,true
+Kayle,0236548971,kayle@email.com,Servidor,false
+Kayle,0236548971,kayle@email.com,Servidor,true
+toko,45621389702,toko.com,Servidor,false
+toko,45621389702,toko.com,Servidor,true
+tati,452136879,tati.com,Servidor,false
+gonsa,123654897562,gonsa.com,Trabajo,false
+emili,745813569,emili.com,Trabajo,false
+kiara,0963258756,Kiara@email.com,Servidor,false
+tito,09654879123,tito.com,Servidor,true
+lucas,09236548975,lucas.email.com,Trabajo,false
+tony,0326485971,tonu.com,Trabajo,false
+Monica Sanchez,0965246859,MonicaSZ@email.com,Servidor,false
