@@ -13,7 +13,7 @@ public class GestionContactos {
         VentanaContactos ventana = new VentanaContactos();
         
         // 2. Inicializamos el controlador pasando la ventana como parámetro (Patrón MVC)
-        new logicaContactos(ventana);
+        //new logicaContactos(ventana);
         
         // 3. Hacemos visible la ventana en el centro de la pantalla
         ventana.setLocationRelativeTo(null);

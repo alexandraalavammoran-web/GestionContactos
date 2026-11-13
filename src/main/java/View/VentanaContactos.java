@@ -1,6 +1,10 @@
 //Esta es la interfaz gráfica de usuario(GUI). Aquí se encuentran todos los componentes visuales que diseñe
 //En esta ventana el usuario ve y manipula directamente.
 package View;
+import Controller.logicaContactos;
+import java.util.Locale;
+import java.util.ResourceBundle;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -9,14 +13,20 @@ package View;
 public class VentanaContactos extends javax.swing.JFrame {
     
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(VentanaContactos.class.getName());
-
+    
+    Locale localizacion;
     /**
      * Creates new form VentanaContactos
      */
     public VentanaContactos() {
         initComponents();
+        this.logica = new logicaContactos(this);
+        localizacion = java.util.Locale.getDefault();
+        //ResourceBundle bundle = ResourceBundle.getBundle("Idiomas.idioma", localizacion);
+        actualizaCampos();
     }
-
+    public logicaContactos logica;
+     
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -26,208 +36,414 @@ public class VentanaContactos extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jTabbedPane1 = new javax.swing.JTabbedPane();
-        jPanel3 = new javax.swing.JPanel();
-        lbl_total = new javax.swing.JLabel();
-        lbl_favoritos = new javax.swing.JLabel();
-        jPanel1 = new javax.swing.JPanel();
+        lbl_buscar = new javax.swing.JPanel();
         jScrollPane2 = new javax.swing.JScrollPane();
         tbl_contactos = new javax.swing.JTable();
         chb_favorito = new javax.swing.JCheckBox();
         cmb_categoria = new javax.swing.JComboBox<>();
-        btn_add = new javax.swing.JButton();
-        btn_modificar = new javax.swing.JButton();
+        btn_agregar = new javax.swing.JButton();
         btn_eliminar = new javax.swing.JButton();
-        JLabel = new javax.swing.JLabel();
-        jLabel2 = new javax.swing.JLabel();
-        jLabel3 = new javax.swing.JLabel();
-        txt_nombre = new javax.swing.JTextField();
+        lbl_telefono = new javax.swing.JLabel();
+        lbl_email = new javax.swing.JLabel();
         txt_telefono = new javax.swing.JTextField();
         txt_email = new javax.swing.JTextField();
-        jLabel4 = new javax.swing.JLabel();
+        lbl_buscarnombre = new javax.swing.JLabel();
         txt_buscar = new javax.swing.JTextField();
         btn_exportar = new javax.swing.JButton();
-        jLabel1 = new javax.swing.JLabel();
+        lbl_categoria = new javax.swing.JLabel();
+        spinner_Edad = new javax.swing.JSpinner();
+        lbl_edad = new javax.swing.JLabel();
+        lbl_genero = new javax.swing.JLabel();
+        cmb_pais = new javax.swing.JComboBox<>();
+        lbl_pais = new javax.swing.JLabel();
+        lbl_cedula = new javax.swing.JLabel();
+        txt_cedula = new javax.swing.JTextField();
+        lbl_nombre = new javax.swing.JLabel();
+        txt_nombre = new javax.swing.JTextField();
+        rbt_m = new javax.swing.JRadioButton();
+        rbt_f = new javax.swing.JRadioButton();
+        rbt_otro = new javax.swing.JRadioButton();
         prg_barras = new javax.swing.JProgressBar();
+        jMenuBar1 = new javax.swing.JMenuBar();
+        file_1 = new javax.swing.JMenu();
+        m_Es = new javax.swing.JMenuItem();
+        menu_S = new javax.swing.JMenuItem();
+        btn_modificar = new javax.swing.JMenu();
+        modificar = new javax.swing.JMenuItem();
+        jMenu3 = new javax.swing.JMenu();
+        idioma = new javax.swing.JMenu();
+        jmiEspanol = new javax.swing.JMenuItem();
+        jMenuItem6 = new javax.swing.JMenuItem();
+        jMenuItem7 = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        lbl_total.setText("Total de Contactos: 0");
+        lbl_buscar.setBackground(new java.awt.Color(229, 235, 250));
 
-        lbl_favoritos.setText("Contactos Favoritos: 0");
-
-        javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
-        jPanel3.setLayout(jPanel3Layout);
-        jPanel3Layout.setHorizontalGroup(
-            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel3Layout.createSequentialGroup()
-                .addGap(26, 26, 26)
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(lbl_total, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(lbl_favoritos, javax.swing.GroupLayout.DEFAULT_SIZE, 121, Short.MAX_VALUE))
-                .addContainerGap(509, Short.MAX_VALUE))
-        );
-        jPanel3Layout.setVerticalGroup(
-            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel3Layout.createSequentialGroup()
-                .addGap(21, 21, 21)
-                .addComponent(lbl_total)
-                .addGap(18, 18, 18)
-                .addComponent(lbl_favoritos)
-                .addContainerGap(393, Short.MAX_VALUE))
-        );
-
-        jTabbedPane1.addTab("Estadísticas", jPanel3);
-
+        tbl_contactos.setBackground(new java.awt.Color(144, 169, 181));
+        tbl_contactos.setFont(new java.awt.Font("Sylfaen", 0, 14)); // NOI18N
         tbl_contactos.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null}
+
             },
             new String [] {
-                "Nombre:", "Telefono:", "Email:", "Categoria", "Favorito"
+                "Nombre:", "Edad", "Teléfono", "Cédula", "Email", "País", "Categoría", "Favoritos"
             }
         ));
         jScrollPane2.setViewportView(tbl_contactos);
 
+        chb_favorito.setFont(new java.awt.Font("Sylfaen", 0, 14)); // NOI18N
         chb_favorito.setText("CONTACTO FAVORITO");
 
-        cmb_categoria.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "(defaut)", "Familia", "Amigos", "Trabajo", "Servidor" }));
+        cmb_categoria.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "(defaut)", "Cliente", "Personal", "Comercial", "Académico" }));
 
-        btn_add.setText("AGREGAR");
+        btn_agregar.setBackground(new java.awt.Color(29, 53, 87));
+        btn_agregar.setFont(new java.awt.Font("Sylfaen", 0, 14)); // NOI18N
+        btn_agregar.setForeground(new java.awt.Color(255, 255, 255));
+        btn_agregar.setIcon(new javax.swing.ImageIcon("C:\\Users\\CRISTINA\\Desktop\\Icons\\VectorAddIconAddIconsAdditionClipartAddPNGandVectorwithTransparentBackgroundforFreeDownload.png")); // NOI18N
+        btn_agregar.setText("AGREGAR");
 
-        btn_modificar.setText("MODIFICAR");
-
+        btn_eliminar.setBackground(new java.awt.Color(29, 53, 87));
+        btn_eliminar.setFont(new java.awt.Font("Sylfaen", 0, 14)); // NOI18N
+        btn_eliminar.setForeground(new java.awt.Color(255, 255, 255));
+        btn_eliminar.setIcon(new javax.swing.ImageIcon("C:\\Users\\CRISTINA\\Desktop\\Icons\\descarga.png")); // NOI18N
         btn_eliminar.setText("ELIMINAR");
 
-        JLabel.setText("NOMBRE:");
+        lbl_telefono.setFont(new java.awt.Font("Sylfaen", 0, 14)); // NOI18N
+        lbl_telefono.setText("Teléfono:");
 
-        jLabel2.setText("TELEFONO:");
+        lbl_email.setFont(new java.awt.Font("Sylfaen", 0, 14)); // NOI18N
+        lbl_email.setText("Email:");
 
-        jLabel3.setText("EMAIL:");
+        lbl_buscarnombre.setFont(new java.awt.Font("Sylfaen", 0, 14)); // NOI18N
+        lbl_buscarnombre.setText("BUSCAR NOMBRE:");
 
-        jLabel4.setText("BUSCAR NOMBRE:");
-
+        btn_exportar.setBackground(new java.awt.Color(29, 53, 87));
+        btn_exportar.setFont(new java.awt.Font("Sylfaen", 0, 14)); // NOI18N
+        btn_exportar.setForeground(new java.awt.Color(255, 255, 255));
+        btn_exportar.setIcon(new javax.swing.ImageIcon("C:\\Users\\CRISTINA\\Desktop\\Icons\\uploaddocumentIcon-FreePNGSVG3109644-NounProject.png")); // NOI18N
         btn_exportar.setText("EXPORTAR CSV");
 
-        jLabel1.setText("CATEGORÍA:");
+        lbl_categoria.setFont(new java.awt.Font("Sylfaen", 0, 14)); // NOI18N
+        lbl_categoria.setText("Categoría:");
 
-        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
-        jPanel1.setLayout(jPanel1Layout);
-        jPanel1Layout.setHorizontalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addComponent(JLabel)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(txt_nombre, javax.swing.GroupLayout.PREFERRED_SIZE, 342, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, Short.MAX_VALUE))
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
+        lbl_edad.setFont(new java.awt.Font("Sylfaen", 0, 14)); // NOI18N
+        lbl_edad.setText("Edad:");
+
+        lbl_genero.setFont(new java.awt.Font("Sylfaen", 0, 14)); // NOI18N
+        lbl_genero.setText("Género:");
+
+        cmb_pais.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Ecuador", "Argentina", "Salvador", "Corea", "Chile", "Estados Unidos", "Inglaterra", "Colombia" }));
+
+        lbl_pais.setFont(new java.awt.Font("Sylfaen", 0, 14)); // NOI18N
+        lbl_pais.setText("Pais:");
+
+        lbl_cedula.setFont(new java.awt.Font("Sylfaen", 0, 14)); // NOI18N
+        lbl_cedula.setText("Cédula:");
+
+        lbl_nombre.setFont(new java.awt.Font("Sylfaen", 0, 14)); // NOI18N
+        lbl_nombre.setText("Nombre:");
+
+        rbt_m.setFont(new java.awt.Font("Sylfaen", 0, 14)); // NOI18N
+        rbt_m.setText("M");
+
+        rbt_f.setFont(new java.awt.Font("Sylfaen", 0, 14)); // NOI18N
+        rbt_f.setText("F");
+
+        rbt_otro.setFont(new java.awt.Font("Sylfaen", 0, 14)); // NOI18N
+        rbt_otro.setText("Otro");
+
+        prg_barras.setBackground(new java.awt.Color(204, 209, 214));
+
+        javax.swing.GroupLayout lbl_buscarLayout = new javax.swing.GroupLayout(lbl_buscar);
+        lbl_buscar.setLayout(lbl_buscarLayout);
+        lbl_buscarLayout.setHorizontalGroup(
+            lbl_buscarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, lbl_buscarLayout.createSequentialGroup()
+                .addGroup(lbl_buscarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, lbl_buscarLayout.createSequentialGroup()
+                        .addGap(35, 35, 35)
+                        .addGroup(lbl_buscarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(lbl_email, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(lbl_genero))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(lbl_buscarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(txt_email, javax.swing.GroupLayout.PREFERRED_SIZE, 349, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(lbl_buscarLayout.createSequentialGroup()
+                                .addGap(8, 8, 8)
+                                .addComponent(rbt_m, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(txt_email))
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addComponent(jLabel2)
+                                .addComponent(rbt_f, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(txt_telefono, javax.swing.GroupLayout.DEFAULT_SIZE, 334, Short.MAX_VALUE)))
-                        .addGap(0, 0, Short.MAX_VALUE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addComponent(chb_favorito, javax.swing.GroupLayout.PREFERRED_SIZE, 164, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(51, 51, 51)
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(jPanel1Layout.createSequentialGroup()
-                                        .addComponent(btn_modificar)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 72, Short.MAX_VALUE)
-                                        .addComponent(btn_eliminar))
-                                    .addGroup(jPanel1Layout.createSequentialGroup()
-                                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 79, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(cmb_categoria, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addGap(43, 43, 43)
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLabel4)
-                                    .addComponent(btn_add))
-                                .addGap(18, 18, 18)
-                                .addComponent(txt_buscar)))
-                        .addGap(40, 40, 40)
-                        .addComponent(btn_exportar)
-                        .addGap(42, 42, 42)))
-                .addContainerGap())
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addGap(0, 0, Short.MAX_VALUE)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 500, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(77, 77, 77))
+                                .addComponent(rbt_otro, javax.swing.GroupLayout.PREFERRED_SIZE, 61, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, lbl_buscarLayout.createSequentialGroup()
+                        .addGap(29, 29, 29)
+                        .addGroup(lbl_buscarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(lbl_buscarLayout.createSequentialGroup()
+                                .addComponent(lbl_buscarnombre, javax.swing.GroupLayout.PREFERRED_SIZE, 162, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .addGroup(lbl_buscarLayout.createSequentialGroup()
+                                .addComponent(lbl_pais, javax.swing.GroupLayout.PREFERRED_SIZE, 65, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(cmb_pais, javax.swing.GroupLayout.PREFERRED_SIZE, 66, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(lbl_categoria, javax.swing.GroupLayout.PREFERRED_SIZE, 65, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(cmb_categoria, javax.swing.GroupLayout.PREFERRED_SIZE, 86, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(83, 83, 83))))
+                    .addGroup(lbl_buscarLayout.createSequentialGroup()
+                        .addGap(48, 48, 48)
+                        .addComponent(btn_agregar)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(btn_eliminar)
+                        .addGap(65, 65, 65)))
+                .addComponent(btn_exportar)
+                .addGap(40, 40, 40))
+            .addGroup(lbl_buscarLayout.createSequentialGroup()
+                .addGroup(lbl_buscarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, lbl_buscarLayout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(chb_favorito)
+                        .addGap(22, 22, 22))
+                    .addGroup(lbl_buscarLayout.createSequentialGroup()
+                        .addGroup(lbl_buscarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(lbl_buscarLayout.createSequentialGroup()
+                                .addGap(185, 185, 185)
+                                .addComponent(txt_buscar, javax.swing.GroupLayout.PREFERRED_SIZE, 268, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(lbl_buscarLayout.createSequentialGroup()
+                                .addGap(36, 36, 36)
+                                .addGroup(lbl_buscarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(lbl_buscarLayout.createSequentialGroup()
+                                        .addComponent(lbl_edad)
+                                        .addGap(22, 22, 22)
+                                        .addComponent(spinner_Edad, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addComponent(lbl_telefono)
+                                    .addGroup(lbl_buscarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                        .addGroup(lbl_buscarLayout.createSequentialGroup()
+                                            .addComponent(lbl_nombre)
+                                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                            .addComponent(txt_nombre))
+                                        .addComponent(txt_telefono, javax.swing.GroupLayout.PREFERRED_SIZE, 341, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGroup(lbl_buscarLayout.createSequentialGroup()
+                                            .addComponent(lbl_cedula)
+                                            .addGap(18, 18, 18)
+                                            .addComponent(txt_cedula, javax.swing.GroupLayout.PREFERRED_SIZE, 340, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                            .addGroup(lbl_buscarLayout.createSequentialGroup()
+                                .addContainerGap()
+                                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 664, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(0, 4, Short.MAX_VALUE)))
+                .addContainerGap(4, Short.MAX_VALUE))
+            .addComponent(prg_barras, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
-        jPanel1Layout.setVerticalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+        lbl_buscarLayout.setVerticalGroup(
+            lbl_buscarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, lbl_buscarLayout.createSequentialGroup()
                 .addGap(16, 16, 16)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(JLabel)
+                .addGroup(lbl_buscarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lbl_nombre)
                     .addComponent(txt_nombre, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel2)
-                    .addComponent(txt_telefono, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(12, 12, 12)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel3)
-                    .addComponent(txt_email, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(chb_favorito)
-                    .addComponent(jLabel1)
-                    .addComponent(cmb_categoria, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(28, 28, 28)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btn_add)
-                    .addComponent(btn_modificar)
-                    .addComponent(btn_eliminar)
-                    .addComponent(btn_exportar))
+                .addGroup(lbl_buscarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lbl_edad)
+                    .addComponent(spinner_Edad, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(txt_buscar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel4))
+                .addGroup(lbl_buscarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lbl_telefono)
+                    .addComponent(txt_telefono, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(lbl_buscarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lbl_cedula)
+                    .addComponent(txt_cedula, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(lbl_buscarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lbl_email)
+                    .addComponent(txt_email, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(lbl_buscarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(lbl_genero)
+                    .addGroup(lbl_buscarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(rbt_m)
+                        .addComponent(rbt_f)
+                        .addComponent(rbt_otro)))
                 .addGap(18, 18, 18)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 206, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(15, Short.MAX_VALUE))
+                .addGroup(lbl_buscarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lbl_pais)
+                    .addComponent(cmb_pais, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(lbl_categoria)
+                    .addComponent(cmb_categoria, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(chb_favorito))
+                .addGap(26, 26, 26)
+                .addGroup(lbl_buscarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btn_exportar)
+                    .addComponent(btn_eliminar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(btn_agregar, javax.swing.GroupLayout.DEFAULT_SIZE, 29, Short.MAX_VALUE))
+                .addGap(18, 18, 18)
+                .addGroup(lbl_buscarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lbl_buscarnombre)
+                    .addComponent(txt_buscar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(27, 27, 27)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 221, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 26, Short.MAX_VALUE)
+                .addComponent(prg_barras, javax.swing.GroupLayout.PREFERRED_SIZE, 14, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
         );
 
-        jTabbedPane1.addTab("Contactos", jPanel1);
+        file_1.setText("File");
+        file_1.addActionListener(this::file_1ActionPerformed);
+
+        m_Es.setText("Estadísticas");
+        m_Es.addActionListener(this::m_EsActionPerformed);
+        file_1.add(m_Es);
+
+        menu_S.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_C, java.awt.event.InputEvent.CTRL_DOWN_MASK));
+        menu_S.setText("Salir");
+        menu_S.addActionListener(this::menu_SActionPerformed);
+        file_1.add(menu_S);
+
+        jMenuBar1.add(file_1);
+
+        btn_modificar.setText("Edit");
+
+        modificar.setText("Modificar");
+        modificar.addActionListener(this::modificarActionPerformed);
+        btn_modificar.add(modificar);
+
+        jMenuBar1.add(btn_modificar);
+
+        jMenu3.setText("Options");
+
+        idioma.setText("Idiomas");
+
+        jmiEspanol.setText("Español");
+        jmiEspanol.addActionListener(this::jmiEspanolActionPerformed);
+        idioma.add(jmiEspanol);
+
+        jMenuItem6.setText("English");
+        jMenuItem6.addActionListener(this::jMenuItem6ActionPerformed);
+        idioma.add(jMenuItem6);
+
+        jMenuItem7.setText("Italiano");
+        jMenuItem7.addActionListener(this::jMenuItem7ActionPerformed);
+        idioma.add(jMenuItem7);
+
+        jMenu3.add(idioma);
+
+        jMenuBar1.add(jMenu3);
+
+        setJMenuBar(jMenuBar1);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jTabbedPane1)
-                    .addComponent(prg_barras, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addContainerGap())
+            .addComponent(lbl_buscar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jTabbedPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 499, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(prg_barras, javax.swing.GroupLayout.PREFERRED_SIZE, 14, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(18, Short.MAX_VALUE))
+            .addComponent(lbl_buscar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
-
-        jTabbedPane1.getAccessibleContext().setAccessibleName("Contactos");
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void file_1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_file_1ActionPerformed
+    //Me equivoque 
+    }//GEN-LAST:event_file_1ActionPerformed
+
+    private void menu_SActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menu_SActionPerformed
+     int confirmar = JOptionPane.showConfirmDialog(VentanaContactos.this, "¿Desea salir de la aplicación?", "Salir", JOptionPane.YES_NO_OPTION);
+    if (confirmar == JOptionPane.YES_OPTION){
+     System.exit(0);   
+    }
+    }//GEN-LAST:event_menu_SActionPerformed
+
+    private void modificarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_modificarActionPerformed
+     logica.guardarModificacionContacto();
+    }//GEN-LAST:event_modificarActionPerformed
+
+
+// El que uso método para actualizaCampos que traduce todo
+private void actualizaCampos() {
+    // Apunta al paquete 'Idiomas' y al archivo base 'Idioma'
+    java.util.ResourceBundle bundle = java.util.ResourceBundle.getBundle("Idiomas.idioma", localizacion);
+    setTitle(bundle.getString("titulo.ventana"));
+    lbl_nombre.setText(bundle.getString("lbl.nombre"));
+    lbl_edad.setText(bundle.getString("lbl.edad"));
+    lbl_telefono.setText(bundle.getString("lbl.telefono"));
+    lbl_cedula.setText(bundle.getString("lbl.cedula"));
+    lbl_email.setText(bundle.getString("lbl.email"));
+    lbl_genero.setText(bundle.getString("lbl.genero"));
+    lbl_pais.setText(bundle.getString("lbl.pais"));
+    lbl_categoria.setText(bundle.getString("lbl.categoria"));
+    chb_favorito.setText(bundle.getString("chb.favorito"));
+    rbt_m.setText(bundle.getString("rbt.m"));
+    rbt_f.setText(bundle.getString("rbt.f"));
+    rbt_otro.setText(bundle.getString("rbt.otro"));
+    btn_agregar.setText(bundle.getString("btn.agregar"));
+    btn_eliminar.setText(bundle.getString("btn.eliminar"));
+    btn_exportar.setText(bundle.getString("btn.exportar"));
+    // Traducir menús superiores
+    file_1.setText(bundle.getString("menu.file"));
+    btn_modificar.setText(bundle.getString("menu.edit"));
+    jMenu3.setText(bundle.getString("menu.options"));
+
+    // Traducir opciones desplegables
+    m_Es.setText(bundle.getString("menu.estadisticas"));
+    menu_S.setText(bundle.getString("menu.salir"));
+    modificar.setText(bundle.getString("menu.modificar"));
+    idioma.setText (bundle.getString("menu.idioma"));
+    lbl_buscarnombre.setText(bundle.getString("menu.buscarnombre"));
+
+  // Traducir encabezados de la tabla (usando la variable tbl_contactos)
+  tbl_contactos.getColumnModel().getColumn(0).setHeaderValue(bundle.getString("lbl.nombre"));
+  tbl_contactos.getColumnModel().getColumn(1).setHeaderValue(bundle.getString("lbl.edad"));
+  tbl_contactos.getColumnModel().getColumn(2).setHeaderValue(bundle.getString("lbl.telefono"));
+  tbl_contactos.getColumnModel().getColumn(3).setHeaderValue(bundle.getString("lbl.cedula"));
+  tbl_contactos.getColumnModel().getColumn(4).setHeaderValue(bundle.getString("lbl.email"));
+  tbl_contactos.getColumnModel().getColumn(5).setHeaderValue(bundle.getString("lbl.pais"));
+  tbl_contactos.getColumnModel().getColumn(6).setHeaderValue(bundle.getString("lbl.categoria"));
+  tbl_contactos.getColumnModel().getColumn(7).setHeaderValue(bundle.getString("chb.favorito"));
+  tbl_contactos.getTableHeader().repaint();
+}
+    private void jmiEspanolActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jmiEspanolActionPerformed
+        localizacion = Locale.of("es", "EC");
+        actualizaCampos();
+    }//GEN-LAST:event_jmiEspanolActionPerformed
+
+    private void jMenuItem6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem6ActionPerformed
+        localizacion = Locale.of("en", "US");
+        actualizaCampos();
+    }//GEN-LAST:event_jMenuItem6ActionPerformed
+
+    private void jMenuItem7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem7ActionPerformed
+        localizacion = Locale.of("it", "IT");
+        actualizaCampos();
+    }//GEN-LAST:event_jMenuItem7ActionPerformed
+
+    private void m_EsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_m_EsActionPerformed
+     ResourceBundle bundle = ResourceBundle.getBundle("Idiomas.idioma", localizacion);
+
+    int totalContactos = tbl_contactos.getRowCount();
+    int totalFavoritos = 0;
+    
+    for (int i = 0; i < totalContactos; i++) {
+        Object valor = tbl_contactos.getValueAt(i, 7);
+        if (valor instanceof Boolean && (Boolean) valor) {
+            totalFavoritos++;
+        } else if (valor != null && valor.toString().equalsIgnoreCase("true")) {
+            totalFavoritos++;
+        }
+    }
+
+    // Ahora bundle funcionará perfectamente sin error
+    String mensaje = bundle.getString("msg.estadisticas.total") + totalContactos + "\n" +
+                     bundle.getString("msg.estadisticas.favoritos") + totalFavoritos;
+                     
+    String titulo = bundle.getString("msg.estadisticas.titulo");
+    
+    JOptionPane.showMessageDialog(this, mensaje, titulo, JOptionPane.INFORMATION_MESSAGE);
+    }//GEN-LAST:event_m_EsActionPerformed
 
     /**
      * @param args the command line arguments
@@ -255,26 +471,42 @@ public class VentanaContactos extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JLabel JLabel;
-    public javax.swing.JButton btn_add;
+    public javax.swing.JButton btn_agregar;
     public javax.swing.JButton btn_eliminar;
     public javax.swing.JButton btn_exportar;
-    public javax.swing.JButton btn_modificar;
+    public javax.swing.JMenu btn_modificar;
     public javax.swing.JCheckBox chb_favorito;
     public javax.swing.JComboBox<String> cmb_categoria;
-    private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel jLabel4;
-    private javax.swing.JPanel jPanel1;
-    private javax.swing.JPanel jPanel3;
+    public javax.swing.JComboBox<String> cmb_pais;
+    private javax.swing.JMenu file_1;
+    private javax.swing.JMenu idioma;
+    private javax.swing.JMenu jMenu3;
+    private javax.swing.JMenuBar jMenuBar1;
+    private javax.swing.JMenuItem jMenuItem6;
+    private javax.swing.JMenuItem jMenuItem7;
     private javax.swing.JScrollPane jScrollPane2;
-    private javax.swing.JTabbedPane jTabbedPane1;
-    public javax.swing.JLabel lbl_favoritos;
-    public javax.swing.JLabel lbl_total;
+    private javax.swing.JMenuItem jmiEspanol;
+    public javax.swing.JPanel lbl_buscar;
+    public javax.swing.JLabel lbl_buscarnombre;
+    public javax.swing.JLabel lbl_categoria;
+    public javax.swing.JLabel lbl_cedula;
+    public javax.swing.JLabel lbl_edad;
+    public javax.swing.JLabel lbl_email;
+    public javax.swing.JLabel lbl_genero;
+    public javax.swing.JLabel lbl_nombre;
+    public javax.swing.JLabel lbl_pais;
+    public javax.swing.JLabel lbl_telefono;
+    private javax.swing.JMenuItem m_Es;
+    private javax.swing.JMenuItem menu_S;
+    private javax.swing.JMenuItem modificar;
     public javax.swing.JProgressBar prg_barras;
+    public javax.swing.JRadioButton rbt_f;
+    public javax.swing.JRadioButton rbt_m;
+    public javax.swing.JRadioButton rbt_otro;
+    public javax.swing.JSpinner spinner_Edad;
     public javax.swing.JTable tbl_contactos;
     public javax.swing.JTextField txt_buscar;
+    public javax.swing.JTextField txt_cedula;
     public javax.swing.JTextField txt_email;
     public javax.swing.JTextField txt_nombre;
     public javax.swing.JTextField txt_telefono;

@@ -22,7 +22,9 @@ public class PersonaDAO {
         PrintWriter p = new PrintWriter(w);
         
         //Escribimos datos separados por comas
-        p.println(persona.getNombre() + "," + persona.getTelefono()+","+ persona.getEmail()+","+ persona.getCategoria()+","+ persona.isFavorito());
+        p.println(persona.getTelefono()+"," + persona.getEdad() + "," + persona.getTelefono() + "," + 
+        persona.getCedula() + "," + persona.getEmail()+"," + persona.getPais() + "," + 
+        persona.getCategoria()+","+ persona.isFavorito());
         
         p.close();
         w.close();

@@ -20,6 +20,7 @@ import javax.swing.JOptionPane;
 import javax.swing.RowFilter;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableRowSorter;
+import javax.swing.JSpinner;
 
  
  //MEJORAS DE CLASE 5: Controlador optimizado bajo el Patrón MVC.
@@ -33,13 +34,13 @@ public class logicaContactos implements ActionListener {
     public logicaContactos(VentanaContactos delegado){
         this.delegado = delegado;
         
-        // 1. Asignación de eventos a los botones de la interfaz mejorada
-        if (this.delegado.btn_add != null) this.delegado.btn_add.addActionListener(this);
+        // 1. Asignación de eventos a los botones de la interfaz
+        if (this.delegado.btn_agregar != null) this.delegado.btn_agregar.addActionListener(this);
         if (this.delegado.btn_modificar != null) this.delegado.btn_modificar.addActionListener(this);
         if (this.delegado.btn_eliminar != null) this.delegado.btn_eliminar.addActionListener(this);
         if (this.delegado.btn_exportar != null) this.delegado.btn_exportar.addActionListener(this);
 
-        // Mejora: Evento de ratón en la JTable para selección y carga automática de datos
+        // 2. Evento de ratón en la JTable para selección y carga automática de datos
         this.delegado.tbl_contactos.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
@@ -51,7 +52,40 @@ public class logicaContactos implements ActionListener {
         actualizarEstadisticas();
     }
 
-    // Mejora: La Configuración de TableRowSorter para filtrado dinámico (requisito de la rúbrica)
+    public void cargarContactoSeleccionado() {
+        int filaVis = delegado.tbl_contactos.getSelectedRow();
+        if (filaVis != -1) {
+            int filaReal = delegado.tbl_contactos.convertRowIndexToModel(filaVis);
+            DefaultTableModel modelo = (DefaultTableModel) delegado.tbl_contactos.getModel();
+            
+            // Cargar los valores de la tabla de regreso a los campos del formulario
+            delegado.txt_nombre.setText(modelo.getValueAt(filaReal, 0) != null ? modelo.getValueAt(filaReal, 0).toString() : "");
+            
+            try {
+                Object valEdad = modelo.getValueAt(filaReal, 1);
+                if (valEdad != null) {
+                    delegado.spinner_Edad.setValue(Integer.parseInt(valEdad.toString()));
+                }
+            } catch (Exception ignored) {}
+
+            delegado.txt_telefono.setText(modelo.getValueAt(filaReal, 2) != null ? modelo.getValueAt(filaReal, 2).toString() : "");
+            delegado.txt_cedula.setText(modelo.getValueAt(filaReal, 3) != null ? modelo.getValueAt(filaReal, 3).toString() : "");
+            delegado.txt_email.setText(modelo.getValueAt(filaReal, 4) != null ? modelo.getValueAt(filaReal, 4).toString() : "");
+            
+            if (modelo.getValueAt(filaReal, 5) != null) {
+                delegado.cmb_pais.setSelectedItem(modelo.getValueAt(filaReal, 5).toString());
+            }
+            if (modelo.getValueAt(filaReal, 6) != null) {
+                delegado.cmb_categoria.setSelectedItem(modelo.getValueAt(filaReal, 6).toString());
+            }
+            
+            if (modelo.getValueAt(filaReal, 7) != null) {
+                String fav = modelo.getValueAt(filaReal, 7).toString();
+                delegado.chb_favorito.setSelected(fav.equalsIgnoreCase("Sí"));
+            }
+        }
+    }
+
     private void configurarBuscador() {
         DefaultTableModel modelo = (DefaultTableModel) delegado.tbl_contactos.getModel();
         sorter = new TableRowSorter<>(modelo);
@@ -78,7 +112,7 @@ public class logicaContactos implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e){
-        if (delegado.btn_add != null && e.getSource() == delegado.btn_add){
+        if (delegado.btn_agregar != null && e.getSource() == delegado.btn_agregar){
             agregarContacto();
         } 
         else if (delegado.btn_modificar != null && e.getSource() == delegado.btn_modificar){
@@ -94,24 +128,27 @@ public class logicaContactos implements ActionListener {
 
     private void agregarContacto() {
         String nombres = delegado.txt_nombre.getText().trim();
+        String edad = delegado.spinner_Edad.getValue().toString(); 
         String telefono = delegado.txt_telefono.getText().trim();
+        String cedula = delegado.txt_cedula.getText().trim();
         String email = delegado.txt_email.getText().trim();
+        String pais = delegado.cmb_pais.getSelectedItem().toString();
         String categoria = delegado.cmb_categoria.getSelectedItem().toString();
         boolean favorito = delegado.chb_favorito.isSelected();
 
-        if (!nombres.isEmpty() && !telefono.isEmpty() && !email.isEmpty()){
+        if (!nombres.isEmpty() && !telefono.isEmpty() && !cedula.isEmpty() && !email.isEmpty()){
             if (!categoria.equalsIgnoreCase("Elija una categoría") && !categoria.equalsIgnoreCase("Item 1") && !categoria.equalsIgnoreCase("(defaut)") ){
 
                 try {
-                    Persona persona = new Persona(nombres, telefono, email, categoria, favorito);
+                    Persona persona = new Persona(nombres, edad, telefono, cedula, email, pais, categoria, favorito);
                     PersonaDAO dao = new PersonaDAO(persona);
                     dao.escribirArchivo();
 
                     DefaultTableModel modeloTabla = (DefaultTableModel) delegado.tbl_contactos.getModel();
                     String esFavoritoTexto = favorito ? "Sí" : "No";
-                    modeloTabla.addRow(new Object[]{nombres, telefono, email, categoria, esFavoritoTexto});
+                    
+                    modeloTabla.addRow(new Object[]{nombres, edad, telefono, cedula, email, pais, categoria, esFavoritoTexto});
 
-                    // Mejora: La activación de la barra de progreso en cada inserción exitosa
                     animarBarraProgreso();
                     actualizarEstadisticas();
                     JOptionPane.showMessageDialog(delegado, "¡Contacto Registrado con Éxito!");
@@ -128,52 +165,38 @@ public class logicaContactos implements ActionListener {
         }
     }
 
-    private void cargarContactoSeleccionado() {
+    public void guardarModificacionContacto() {
         int filaVis = delegado.tbl_contactos.getSelectedRow();
-        if (filaVis >= 0) {
-            filaSeleccionada = delegado.tbl_contactos.convertRowIndexToModel(filaVis);
-            DefaultTableModel modelo = (DefaultTableModel) delegado.tbl_contactos.getModel();
-            
-            delegado.txt_nombre.setText(modelo.getValueAt(filaSeleccionada, 0).toString());
-            delegado.txt_telefono.setText(modelo.getValueAt(filaSeleccionada, 1).toString());
-            delegado.txt_email.setText(modelo.getValueAt(filaSeleccionada, 2).toString());
-            delegado.cmb_categoria.setSelectedItem(modelo.getValueAt(filaSeleccionada, 3).toString());
-            
-            String fav = modelo.getValueAt(filaSeleccionada, 4).toString();
-            delegado.chb_favorito.setSelected(fav.equalsIgnoreCase("Sí"));
-        }
-    }
-
-    // Mejora: Modificación segura y directa seleccionando la fila sin sobreescribir celdas vacías
-    private void guardarModificacionContacto() {
-        if (filaSeleccionada < 0) {
-            JOptionPane.showMessageDialog(delegado, "Por favor, haga clic en un contacto de la tabla para modificarlo.");
+        if (filaVis == -1) {
+            JOptionPane.showMessageDialog(delegado, "Seleccione un contacto de la tabla para modificar.");
             return;
         }
-
-        String nombres = delegado.txt_nombre.getText().trim();
-        String telefono = delegado.txt_telefono.getText().trim();
-        String email = delegado.txt_email.getText().trim();
+        
+        int filaReal = delegado.tbl_contactos.convertRowIndexToModel(filaVis);
+        DefaultTableModel modelo = (DefaultTableModel) delegado.tbl_contactos.getModel();
+        
+        String nombre = delegado.txt_nombre.getText();
+        int edad = (Integer) delegado.spinner_Edad.getValue();
+        String telefono = delegado.txt_telefono.getText();
+        String cedula = delegado.txt_cedula.getText();
+        String email = delegado.txt_email.getText();
+        String pais = delegado.cmb_pais.getSelectedItem().toString();
         String categoria = delegado.cmb_categoria.getSelectedItem().toString();
         boolean favorito = delegado.chb_favorito.isSelected();
-
-        if (!nombres.isEmpty() && !telefono.isEmpty() && !email.isEmpty()) {
-            DefaultTableModel modelo = (DefaultTableModel) delegado.tbl_contactos.getModel();
-
-            modelo.setValueAt(nombres, filaSeleccionada, 0);
-            modelo.setValueAt(telefono, filaSeleccionada, 1);
-            modelo.setValueAt(email, filaSeleccionada, 2);
-            modelo.setValueAt(categoria, filaSeleccionada, 3);
-            modelo.setValueAt(favorito ? "Sí" : "No", filaSeleccionada, 4);
-
-            animarBarraProgreso();
-            actualizarEstadisticas();
-            JOptionPane.showMessageDialog(delegado, "¡Contacto modificado con éxito!");
-            limpiarCampos();
-            filaSeleccionada = -1;
-        } else {
-            JOptionPane.showMessageDialog(delegado, "Los campos no pueden estar vacíos al modificar.");
-        }
+        
+        modelo.setValueAt(nombre, filaReal, 0);
+        modelo.setValueAt(edad, filaReal, 1);
+        modelo.setValueAt(telefono, filaReal, 2);
+        modelo.setValueAt(cedula, filaReal, 3);
+        modelo.setValueAt(email, filaReal, 4);
+        modelo.setValueAt(pais, filaReal, 5);
+        modelo.setValueAt(categoria, filaReal, 6);
+        modelo.setValueAt(favorito ? "Sí" : "No", filaReal, 7);
+        
+        animarBarraProgreso();
+        actualizarEstadisticas();
+        JOptionPane.showMessageDialog(delegado, "Contacto modificado con éxito.");
+        limpiarCampos();
     }
 
     private void eliminarContacto() {
@@ -193,11 +216,9 @@ public class logicaContactos implements ActionListener {
             actualizarEstadisticas();
             JOptionPane.showMessageDialog(delegado, "Contacto eliminado correctamente.");
             limpiarCampos();
-            filaSeleccionada = -1;
         }
     }
 
-    // Mejora: Funcionalidad avanzada de exportación a CSV con selector de archivos del sistema operativo
     private void exportarCSV() {
         DefaultTableModel modelo = (DefaultTableModel) delegado.tbl_contactos.getModel();
         if (modelo.getRowCount() == 0) {
@@ -238,7 +259,6 @@ public class logicaContactos implements ActionListener {
         }
     }
 
-    // Mejora: Hilos concurrentes (Threads) para animar la JProgressBar en operaciones del sistema
     private void animarBarraProgreso() {
         if (delegado.prg_barras != null) {
             delegado.prg_barras.setValue(0);
@@ -254,28 +274,25 @@ public class logicaContactos implements ActionListener {
         }
     }
 
-    // Mejora: Actualización dinámica en tiempo real de estadísticas para la pestaña de Estadísticas
     private void actualizarEstadisticas() {
         DefaultTableModel modeloTabla = (DefaultTableModel) delegado.tbl_contactos.getModel();
         int totalContactos = modeloTabla.getRowCount();
         int totalFavoritos = 0;
 
         for (int i = 0; i < totalContactos; i++) {
-            if (modeloTabla.getColumnCount() > 4 && modeloTabla.getValueAt(i, 4) != null) {
-                String esFavorito = modeloTabla.getValueAt(i, 4).toString();
+            if (modeloTabla.getColumnCount() > 7 && modeloTabla.getValueAt(i, 7) != null) {
+                String esFavorito = modeloTabla.getValueAt(i, 7).toString();
                 if (esFavorito.equalsIgnoreCase("Sí")) {
                     totalFavoritos++;
                 }
             }
         }
-
-        if (delegado.lbl_total != null) delegado.lbl_total.setText("Total de Contactos: " + totalContactos);
-        if (delegado.lbl_favoritos != null) delegado.lbl_favoritos.setText("Contactos Favoritos: " + totalFavoritos);
     }
 
     private void limpiarCampos() {
         delegado.txt_nombre.setText("");
         delegado.txt_telefono.setText("");
+        delegado.txt_cedula.setText("");
         delegado.txt_email.setText("");
         if (delegado.cmb_categoria.getItemCount() > 0) {
             delegado.cmb_categoria.setSelectedIndex(0);
