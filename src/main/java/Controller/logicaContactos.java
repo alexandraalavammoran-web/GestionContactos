@@ -95,7 +95,16 @@ public class logicaContactos implements ActionListener {
             delegado.txt_buscar.addKeyListener(new KeyAdapter() {
                 @Override
                 public void keyReleased(KeyEvent e) {
-                    aplicarFiltro();
+                    // Usamos SwingWorker para realizar el filtrado de forma concurrente
+                    javax.swing.SwingWorker<Void, Void> worker = new javax.swing.SwingWorker<>() {
+                        @Override
+                        protected Void doInBackground() throws Exception {
+                            // Operación de filtrado en segundo plano
+                            aplicarFiltro();
+                            return null;
+                        }
+                    };
+                    worker.execute();
                 }
             });
         }
@@ -125,7 +134,6 @@ public class logicaContactos implements ActionListener {
             exportarCSV();
         }
     }
-
     private void agregarContacto() {
         String nombres = delegado.txt_nombre.getText().trim();
         String edad = delegado.spinner_Edad.getValue().toString(); 
@@ -139,24 +147,34 @@ public class logicaContactos implements ActionListener {
         if (!nombres.isEmpty() && !telefono.isEmpty() && !cedula.isEmpty() && !email.isEmpty()){
             if (!categoria.equalsIgnoreCase("Elija una categoría") && !categoria.equalsIgnoreCase("Item 1") && !categoria.equalsIgnoreCase("(defaut)") ){
 
-                try {
-                    Persona persona = new Persona(nombres, edad, telefono, cedula, email, pais, categoria, favorito);
-                    PersonaDAO dao = new PersonaDAO(persona);
-                    dao.escribirArchivo();
+                // Creamos un hilo en segundo plano para validar y guardar esto evita congelar la UI
+                new Thread(() -> {
+                    try {
+                        Persona persona = new Persona(nombres, edad, telefono, cedula, email, pais, categoria, favorito);
+                        PersonaDAO dao = new PersonaDAO(persona);
+                        
+                        // Aquí puedo añadir validación de duplicados si lo deseo
+                        dao.escribirArchivo();
 
-                    DefaultTableModel modeloTabla = (DefaultTableModel) delegado.tbl_contactos.getModel();
-                    String esFavoritoTexto = favorito ? "Sí" : "No";
-                    
-                    modeloTabla.addRow(new Object[]{nombres, edad, telefono, cedula, email, pais, categoria, esFavoritoTexto});
+                        // Actualizamos la interfaz de forma segura con SwingUtilities.invokeLater
+                        javax.swing.SwingUtilities.invokeLater(() -> {
+                            DefaultTableModel modeloTabla = (DefaultTableModel) delegado.tbl_contactos.getModel();
+                            String esFavoritoTexto = favorito ? "Sí" : "No";
+                            modeloTabla.addRow(new Object[]{nombres, edad, telefono, cedula, email, pais, categoria, esFavoritoTexto});
 
-                    animarBarraProgreso();
-                    actualizarEstadisticas();
-                    JOptionPane.showMessageDialog(delegado, "¡Contacto Registrado con Éxito!");
-                    limpiarCampos();
+                            animarBarraProgreso();
+                            actualizarEstadisticas();
+                            JOptionPane.showMessageDialog(delegado, "¡Contacto Registrado con Éxito!");
+                            limpiarCampos();
+                        });
 
-                } catch (IOException ex){
-                    JOptionPane.showMessageDialog(delegado, "Error al guardar en el archivo.");
-                }
+                    } catch (IOException ex){
+                        javax.swing.SwingUtilities.invokeLater(() -> {
+                            JOptionPane.showMessageDialog(delegado, "Error al guardar en el archivo.");
+                        });
+                    }
+                }).start();
+
             } else {
                 JOptionPane.showMessageDialog(delegado, "Por favor, elija una categoría válida.");
             }
@@ -219,7 +237,7 @@ public class logicaContactos implements ActionListener {
         }
     }
 
-    private void exportarCSV() {
+    private synchronized void exportarCSV() {
         DefaultTableModel modelo = (DefaultTableModel) delegado.tbl_contactos.getModel();
         if (modelo.getRowCount() == 0) {
             JOptionPane.showMessageDialog(delegado, "No hay contactos para exportar.");
@@ -237,28 +255,38 @@ public class logicaContactos implements ActionListener {
                 ruta += ".csv";
             }
 
-            try (FileWriter csv = new FileWriter(ruta)) {
-                for (int i = 0; i < modelo.getColumnCount(); i++) {
-                    csv.write(modelo.getColumnName(i) + (i == modelo.getColumnCount() - 1 ? "" : ","));
-                }
-                csv.write("\n");
+            // Declaramos una variable final para que Java la acepte dentro del hilo
+            final String rutaFinal = ruta;
 
-                for (int i = 0; i < modelo.getRowCount(); i++) {
-                    for (int j = 0; j < modelo.getColumnCount(); j++) {
-                        csv.write(modelo.getValueAt(i, j).toString() + (j == modelo.getColumnCount() - 1 ? "" : ","));
+            // Exportación ejecutada en un hilo independiente osea multihilos
+            new Thread(() -> {
+                try (FileWriter csv = new FileWriter(rutaFinal)) {
+                    for (int i = 0; i < modelo.getColumnCount(); i++) {
+                        csv.write(modelo.getColumnName(i) + (i == modelo.getColumnCount() - 1 ? "" : ","));
                     }
                     csv.write("\n");
+
+                    for (int i = 0; i < modelo.getRowCount(); i++) {
+                        for (int j = 0; j < modelo.getColumnCount(); j++) {
+                            csv.write(modelo.getValueAt(i, j).toString() + (j == modelo.getColumnCount() - 1 ? "" : ","));
+                        }
+                        csv.write("\n");
+                    }
+
+                    javax.swing.SwingUtilities.invokeLater(() -> {
+                        animarBarraProgreso();
+                        JOptionPane.showMessageDialog(delegado, "¡Archivo CSV exportado con éxito en:\n" + rutaFinal);
+                    });
+
+                } catch (IOException ex) {
+                    javax.swing.SwingUtilities.invokeLater(() -> {
+                        JOptionPane.showMessageDialog(delegado, "Error al exportar el archivo CSV.");
+                    });
                 }
-
-                animarBarraProgreso();
-                JOptionPane.showMessageDialog(delegado, "¡Archivo CSV exportado con éxito en:\n" + ruta);
-
-            } catch (IOException ex) {
-                JOptionPane.showMessageDialog(delegado, "Error al exportar el archivo CSV.");
-            }
+            }).start();
         }
     }
-
+    
     private void animarBarraProgreso() {
         if (delegado.prg_barras != null) {
             delegado.prg_barras.setValue(0);

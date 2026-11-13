@@ -183,21 +183,22 @@ public class VentanaContactos extends javax.swing.JFrame {
                             .addGroup(lbl_buscarLayout.createSequentialGroup()
                                 .addComponent(lbl_buscarnombre, javax.swing.GroupLayout.PREFERRED_SIZE, 162, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                            .addGroup(lbl_buscarLayout.createSequentialGroup()
-                                .addComponent(lbl_pais, javax.swing.GroupLayout.PREFERRED_SIZE, 65, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(cmb_pais, javax.swing.GroupLayout.PREFERRED_SIZE, 66, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(lbl_categoria, javax.swing.GroupLayout.PREFERRED_SIZE, 65, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(cmb_categoria, javax.swing.GroupLayout.PREFERRED_SIZE, 86, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(83, 83, 83))))
-                    .addGroup(lbl_buscarLayout.createSequentialGroup()
-                        .addGap(48, 48, 48)
-                        .addComponent(btn_agregar)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(btn_eliminar)
-                        .addGap(65, 65, 65)))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, lbl_buscarLayout.createSequentialGroup()
+                                .addGroup(lbl_buscarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addGroup(lbl_buscarLayout.createSequentialGroup()
+                                        .addGap(19, 19, 19)
+                                        .addComponent(btn_agregar)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                        .addComponent(btn_eliminar))
+                                    .addGroup(lbl_buscarLayout.createSequentialGroup()
+                                        .addComponent(lbl_pais, javax.swing.GroupLayout.PREFERRED_SIZE, 65, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(cmb_pais, javax.swing.GroupLayout.PREFERRED_SIZE, 66, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                        .addComponent(lbl_categoria, javax.swing.GroupLayout.PREFERRED_SIZE, 65, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(cmb_categoria, javax.swing.GroupLayout.PREFERRED_SIZE, 86, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addGap(83, 83, 83)))))
                 .addComponent(btn_exportar)
                 .addGap(40, 40, 40))
             .addGroup(lbl_buscarLayout.createSequentialGroup()
@@ -436,7 +437,7 @@ private void actualizaCampos() {
         }
     }
 
-    // Ahora bundle funcionará perfectamente sin error
+    // Esto es para que bundle funcione perfectamente sin error
     String mensaje = bundle.getString("msg.estadisticas.total") + totalContactos + "\n" +
                      bundle.getString("msg.estadisticas.favoritos") + totalFavoritos;
                      

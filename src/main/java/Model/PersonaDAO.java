@@ -17,15 +17,14 @@ public class PersonaDAO {
     this.archivo = new File("Contacto.txt");//Archivo de texto donde se guardara
     }
    //El método para escribir datos en el archivo texto
-    public void escribirArchivo() throws IOException{
-        FileWriter w = new FileWriter(archivo, true); // true ayuda a que no se sobrescriba, sino que agg
+   public synchronized void escribirArchivo() throws IOException {
+        FileWriter w = new FileWriter(archivo, true); 
         PrintWriter p = new PrintWriter(w);
         
-        //Escribimos datos separados por comas
-        p.println(persona.getTelefono()+"," + persona.getEdad() + "," + persona.getTelefono() + "," + 
-        persona.getCedula() + "," + persona.getEmail()+"," + persona.getPais() + "," + 
-        persona.getCategoria()+","+ persona.isFavorito());
-        
+        p.println(persona.getNombre() + "," + persona.getEdad() + "," + persona.getTelefono() + "," + 
+                  persona.getCedula() + "," + persona.getEmail() + "," + persona.getPais() + "," + 
+                  persona.getCategoria() + "," + persona.isFavorito());
+
         p.close();
         w.close();
     }

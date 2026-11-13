@@ -15,3 +15,14 @@ tito,09654879123,tito.com,Servidor,true
 lucas,09236548975,lucas.email.com,Trabajo,false
 tony,0326485971,tonu.com,Trabajo,false
 Monica Sanchez,0965246859,MonicaSZ@email.com,Servidor,false
+065213489,29,065213489,256315478,claro.com,Argentina,Cliente,true
+1236548,20,1236548,123564987512,atititi,Salvador,Académico,false
+0231654897,20,0231654897,0236548194,email.ctd.com,Corea,Personal,true
+03215648975,11,03215648975,0956231547,luca.letu.com,Salvador,Académico,true
+2365948,3,2365948,123654897,mirata_jou.com,Corea,Personal,true
+132564897,21,132564897,235648975,luisa@email.com,Chile,Cliente,true
+45216,18,45216,123654,kiaraq,Salvador,Personal,true
+1256,16,1256,52364,gemeni,Corea,Académico,true
+0932584597,25,0932584597,09356485715,Genesis@email.com,Corea,Personal,true
+06598721526,25,06598721526,0235648915,jaimevc@email.com,Argentina,Cliente,false
+0623594852,29,0623594852,0956458215,Alancito@email.com,Ecuador,Personal,true
